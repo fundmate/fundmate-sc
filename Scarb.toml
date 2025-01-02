@@ -2,7 +2,11 @@
 name = "fundmate"
 version = "0.1.0"
 edition = "2024_07"
+cairo-version = "2.9.2"
+scarb-version = "2.9.2"
 
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
 
 [dependencies]
+starknet = "2.9.2"
+openzeppelin = "0.20.0"
