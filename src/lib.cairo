@@ -1,8 +1,5 @@
-mod types;
-use types::FundMateRequest;
+pub mod types;
 
-mod interfaces;
-use interfaces::IFundMate;
+pub mod interfaces;
 
-mod contract;
-use contract::FundMate;
+pub mod contract;
