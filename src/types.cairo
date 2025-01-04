@@ -11,7 +11,7 @@ pub const REQUEST_TYPE_HASH: felt252 = selector!(
 );
 
 
-#[derive(Serde, Copy, Drop, Hash)]
+#[derive(Serde, Copy, Drop, Hash, starknet::Store)]
 pub struct ParticipantInfo {
     pub address: ContractAddress,
     pub amount: u256,
