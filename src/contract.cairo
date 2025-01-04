@@ -9,10 +9,7 @@ pub mod FundMate {
         starknet::{
             get_caller_address, get_block_timestamp, get_contract_address, ContractAddress,
             event::EventEmitter,
-            storage::{
-                Vec, VecTrait, MutableVecTrait, Map, StorageMapReadAccess, StorageMapWriteAccess,
-                StorageBase, StoragePath, StoragePointerReadAccess, StorageTrait,
-            },
+            storage::{Vec, MutableVecTrait, Map, StorageMapReadAccess, StoragePointerReadAccess},
         },
         poseidon::{PoseidonTrait, PoseidonImpl}, hash::{HashStateTrait, HashStateExTrait},
     };

@@ -3,7 +3,7 @@ use core::{
     hash::{Hash, HashStateTrait, HashStateExTrait},
 };
 
-use openzeppelin::utils::snip12::{SNIP12Metadata, StructHash};
+use openzeppelin::utils::snip12::StructHash;
 
 // TODO: Check this type hash
 pub const REQUEST_TYPE_HASH: felt252 = selector!(
