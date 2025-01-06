@@ -106,6 +106,7 @@ pub mod FundMate {
         pub const INVALID_SIGNATURES_LENGTH: felt252 = 'Signature: Invalid length';
         pub const INVALID_SIGNATURE: felt252 = 'Signature: Invalid signature';
         pub const NOT_ENOUGH_FUNDS_COLLECTED: felt252 = 'Amount: Not enough collected';
+        pub const AMOUNTS_DONT_ADD_UP: felt252 = 'Amount: Amounts don\'t add up';
         pub const TOKEN_TRANSFER_FAILED: felt252 = 'Token transfer: Failed';
         pub const PARTICIPANTS_AMOUNTS_NOT_MATCH: felt252 = 'Participant: Amount not match';
         pub const INVALID_EXPIRATION_TIMESTAMP: felt252 = 'Expiration: Invalid expiration';
@@ -229,12 +230,16 @@ pub mod FundMate {
 
             let split_payment_participants_path = self.split_payment_participants.entry(request_id);
 
+            let mut total_amount: u256 = 0;
             for participant_info in participants_info.clone() {
+                total_amount += participant_info.amount;
                 participants_amounts_storage_path
                     .entry(participant_info.address)
                     .write(participant_info.amount);
                 split_payment_participants_path.append().write(participant_info.address);
             };
+
+            assert(total_amount >= amount, Errors::AMOUNTS_DONT_ADD_UP);
 
             self
                 .split_payment_info
