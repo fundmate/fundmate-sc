@@ -10,3 +10,7 @@ scarb-version = "2.9.2"
 [dependencies]
 starknet = "2.9.2"
 openzeppelin = "0.20.0"
+
+
+[[target.starknet-contract]]
+casm = true
