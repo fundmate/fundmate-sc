@@ -117,6 +117,8 @@ pub mod FundMate {
         pub const PAYMENT_IS_FINALISED: felt252 = 'Payment: Finalised';
         pub const PAYMENT_NOT_PAID: felt252 = 'Payment: Not paid';
         pub const ALREADY_REFUNDED: felt252 = 'Refund: Already refunded';
+        pub const COORDINATOR_NOT_IN: felt252 = 'Coordinator not in the set';
+        pub const PARTICIPANT_ALREADY_IN: felt252 = 'Participant already in';
     }
 
     #[derive(Drop, starknet::Store)]
@@ -230,17 +232,29 @@ pub mod FundMate {
 
             let split_payment_participants_path = self.split_payment_participants.entry(request_id);
 
+            let mut is_coordinator_in: bool = false;
             let mut total_amount: u256 = 0;
             for participant_info in participants_info.clone() {
                 total_amount += participant_info.amount;
+                let current_amount = participants_amounts_storage_path
+                    .entry(participant_info.address)
+                    .read();
+                // In case participant is present multiple times in the array, second time with
+                // lower amount
+                assert(current_amount == 0, Errors::PARTICIPANT_ALREADY_IN);
+
                 participants_amounts_storage_path
                     .entry(participant_info.address)
                     .write(participant_info.amount);
                 split_payment_participants_path.append().write(participant_info.address);
+
+                if participant_info.address == coordinator {
+                    is_coordinator_in = true;
+                }
             };
 
             assert(total_amount >= amount, Errors::AMOUNTS_DONT_ADD_UP);
-
+            assert(is_coordinator_in, Errors::COORDINATOR_NOT_IN);
             self
                 .split_payment_info
                 .entry(request_id)
